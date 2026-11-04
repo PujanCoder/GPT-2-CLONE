@@ -1,29 +1,31 @@
 import torch
 import torch.nn as nn
-import math
 
 
 class MLP(nn.Module):
 
-    def __init__(self, config):
+    def __init__(
+        self,
+        embedding_dim=768,
+        hidden_dim=3072,
+        dropout=0.1
+    ):
 
         super().__init__()
 
         self.fc1 = nn.Linear(
-            config.embedding_dim,
-            config.embedding_dim * 4,
-            bias=config.use_bias
+            embedding_dim,
+            hidden_dim
         )
 
         self.activation = nn.GELU(approximate="tanh")
 
         self.fc2 = nn.Linear(
-            config.embedding_dim * 4,
-            config.embedding_dim,
-            bias=config.use_bias
+            hidden_dim,
+            embedding_dim
         )
 
-        self.dropout = nn.Dropout(config.dropout)
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
 
